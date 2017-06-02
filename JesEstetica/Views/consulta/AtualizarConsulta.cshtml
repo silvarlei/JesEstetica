@@ -1,0 +1,18 @@
+﻿
+@model consultar
+
+
+<div class="form-group col-lg-12">
+    <label>status :</label>
+   
+
+        @Html.DropDownListFor(c => c.statusID, Model.statusLista , new { @class= "form-control col-lg-12" ,@id="cboModelStatus" })
+    
+</div>
+
+<div class="form-group col-lg-12">
+    <label>Responsavel :</label>
+    
+        @Html.DropDownListFor(c => c.usuarioResponsavelID, Model.usuariosLista, new { @class = "form-control col-lg-12", @id = "cboModelUsuario" })
+    
+</div>

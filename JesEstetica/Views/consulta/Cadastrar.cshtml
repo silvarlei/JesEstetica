@@ -1,0 +1,311 @@
+﻿@model consultar
+
+<br />
+
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#sectionA">Cliente</a></li>
+    <li><a data-toggle="tab" href="#sectionB">Serviço</a></li>
+</ul>
+<div class="tab-content">
+    <div id="sectionA" class="tab-pane fade in active">
+        <br />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form role="form">
+                                    <div id="divCliente">
+                                        <div class="form-group col-lg-8 col-lg-offset-2">
+
+                                            <button type="button" class="btn btn-info col-lg-12" data-toggle="modal" data-target="#myModalBusca">Buscar Cliente</button>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.col-lg-6 (nested) -->
+                            <!-- /.col-lg-6 (nested) -->
+                        </div>
+
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+    </div>
+    <div id="sectionB" class="tab-pane fade">
+        <br />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form role="form">
+
+                                    <div class="form-group col-lg-3">
+                                        <label>Data :</label>
+                                        <div class="input-group ">
+
+                                            <input class="form-control" id="txtData">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-9">
+                                        <label>Serviço :</label>
+                                        @Html.DropDownListFor(m => m.servicoID, Model.servicos, new { @class = "form-control", @id = "cboServico" })
+
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label>Sessões :</label>
+                                        <select id="cboSessao" class="form-control">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="1">3</option>
+                                            <option value="1">4</option>
+                                            <option value="1">5</option>
+                                            <option value="1">6</option>
+                                            <option value="1">7</option>
+                                            <option value="1">8</option>
+                                            <option value="1">9</option>
+                                            <option value="1">10</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group col-lg-9">
+                                        <label>Responsavel :</label>
+
+                                        @Html.DropDownListFor(c => c.usuarioResponsavelID, Model.usuariosLista, new { @class = "form-control col-lg-12", @id = "cboUsuarioResponsavel" })
+
+                                    </div>
+                                    <div class="form-group col-lg-9">
+                                        <label>Obs :</label>
+                                        <input class="form-control" id="txtObs" />
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <br />
+
+                                        <button type="button" id="btnAdicionar" class="btn btn-default col-lg-12"> Adicionar</button>
+
+                                    </div>
+                                </form>
+
+
+                            </div>
+                            <!-- /.col-lg-6 (nested) -->
+                            <!-- /.col-lg-6 (nested) -->
+                        </div>
+
+                        <!-- /.row (nested) -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="form-group col-lg-12">
+            <h3 class="page-header">Historico de Consultas em aberto</h3>
+        </div>
+        <!-- /.col-lg-12 -->
+
+        <div id="divConsulta">
+
+        </div>
+    </div>
+
+
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModalBusca" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Buscar Cliente</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form">
+                                <div class="form-group col-lg-12">
+                                    <label>Nome :</label>
+                                    <input class="form-control" id="txtNomeModal">
+
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label>CPF :</label>
+                                    <input class="form-control" id="txtCPFModal">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label>RG:</label>
+                                    <input class="form-control" id="txtRGModal">
+                                </div>
+
+                                <div id="listaClientes">
+
+                                </div>
+
+                            </form>
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+                        <!-- /.col-lg-6 (nested) -->
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="/cliente/cadastrar" class="btn btn-default">Novo Cliente</a>
+                <button type="button" class="btn btn-default" id="btnFechaModal" data-dismiss="modal">Fechar</button>
+                <button type="button" id="btnPesquisar" class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalHistorico" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Dados da Consulta</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form">
+
+                                @Html.Action("AtualizarConsulta", "consulta")
+
+                            </form>
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+                        <!-- /.col-lg-6 (nested) -->
+                    </div>
+
+                    <!-- /.row (nested) -->
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" id="btnFechaModalConsulta" data-dismiss="modal">Fechar</button>
+                <button type="button" id="btnSalvarConsulta" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+
+    $(function () {
+        $('#txtData').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+    });
+    $('#txtData').mask('00/00/0000 00:00');
+
+
+    $("#btnPesquisar").click(function () {
+
+
+        var data = {
+            nome: $('#txtNomeModal').val(),
+            cpf: $('#txtCPFModal').val(),
+            rg: $('#txtRGModal').val()
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/cliente/listarCliente/",
+            content: "application/json; charset=utf-8",
+            dataType: "html",
+            data: data,
+            success: function (d) {
+                $("#listaClientes").html(d);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                // TODO: Show error
+            }
+        });
+    });
+
+    $("#btnAdicionar").click(function () {
+
+        if ($('#txtData').val() == "")
+        {
+            alert("Por Favor incluir uma data para a consulta !");
+            return false;
+        }
+        var data = {
+            clienteID: $("#hfIDCliente").val(),
+            servicoID: $('#cboServico option:selected').val(),
+            dataConsulta: $('#txtData').val(),
+            statusID: 1,//status aberto default ,
+            sessao: $('#cboSessao option:selected').val(),
+            usuarioResponsavelID: $('#cboUsuarioResponsavel option:selected').val(),
+            obs: $('#txtObs').val()
+
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/consulta/salvar/",
+            content: "application/json; charset=utf-8",
+            dataType: "json",
+            data: data,
+            success: function (d) {
+                $("#listaClientes").html(d);
+                AtualizaTabelaConsulta("#divConsulta", false);
+                AtualizaTabelaConsulta("#divHistoricoCliente", true);
+                $('#cboServico option:selected').val();
+                $('#cboServico option:selected').val();
+                $('#txtData').val("");
+                $('#txtObs').val("");
+
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                // TODO: Show error
+            }
+        });
+    });
+
+
+    $("#btnSalvarConsulta").click(function () {
+
+        var data = {
+            id: $('#hfConsultaID').val(),
+            statusID: $('#cboModelStatus option:selected').val(),
+            usuarioResponsavelID: $('#cboModelUsuario option:selected').val()
+
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/consulta/atualizarDados/",
+            content: "application/json; charset=utf-8",
+            dataType: "html",
+            data: data,
+            success: function (d) {
+                $("#btnFechaModalConsulta").click();
+                AtualizaTabelaConsulta("#divConsulta", false);
+                AtualizaTabelaConsulta("#divHistoricoCliente", true);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                // TODO: Show error
+            }
+        });
+    });
+
+</script>

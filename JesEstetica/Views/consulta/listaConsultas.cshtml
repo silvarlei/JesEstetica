@@ -1,0 +1,214 @@
+﻿
+@model  IEnumerable<consultar>
+<input type="hidden" id="hfConsultaListaID" />
+
+
+@if (Model != null)
+{
+    if (Model.Count() < 1)
+    {
+        <h5>Cliente sem historico !</h5>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    @*<th>Nome</th>
+                        <th>CPF</th>
+                        <th>Telefone1</th>
+                        <th>Telefone2</th>*@
+                    <th>Cliente</th>
+                    <th>Serviço</th>
+                    <th>Status da Consulta</th>
+                    <th>Responsavel</th>
+                    <th>Registrada em</th>
+                    <th>Agendamento da Consulta</th>
+                    <th>Obs</th>
+                  @*  <th>Finalizada em</th>*@
+                    <th>#</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var cor = "";
+                    if (@item.status.finaliza == true)
+                    {
+                        if (@item.status.nome == "Cancelada" || @item.status.nome == "Remarcada")
+                        {
+                            cor = "danger";
+                        }
+                        else if (@item.status.nome == "Realizada")
+                        {
+                            cor = "success";
+                        }
+                    }
+
+                    <tr class="@cor">
+                        @*<td>
+                                @item.cliente.nome
+                            </td>
+                            <td>
+                                @item.cliente.CPF
+
+
+                            </td>
+                            <td>
+                                @item.cliente.telefone1
+
+
+                            </td>
+                            <td>
+                                @item.cliente.telefone2
+
+
+                            </td>*@
+                        <td>
+                            @item.cliente.nome
+                        </td>
+                        <td>
+                            @item.servico.nome
+
+
+                        </td>
+                        <td>
+                            @item.status.nome
+
+
+                        </td>
+                        <td>
+                            @if (@item.usuario.nome == null || @item.usuario.nome == "")
+                            {
+                                <p>Nenhum usuario Responsavel</p>
+                            }
+                            else
+                            {
+                                @item.usuario.nome
+                            }
+
+
+                        </td>
+                        <td>
+                            @item.data
+
+
+                        </td>
+                        <td>
+                            @item.dataConsulta
+
+
+                            @*@Html.ActionLink("editar", "Editar", "cliente", new {  id = @item.idClientes },null)*@
+                            @*<a href="@Url.Action("Editar", "cliente", new {  id = @item.idClientes })" >Editar</a>*@
+
+                        </td>
+                        @*<td>
+                            @if (@item.dataFinalizaConsulta == null)
+                            {
+                                <p>Aguardando Serviço</p>
+                            }
+                            else
+                            {
+                                @item.dataFinalizaConsulta
+                            }
+                        </td>*@
+                        <td data-toggle="tooltip" data-placement="top" title=" @item.obs">
+
+                            @if (@item.obs == null || @item.obs == "")
+                            {
+
+                            }
+                            else
+                            {
+                                <p> OBSERVAÇÃO</p>
+                            }
+
+                        </td>
+                        <td>
+                            @if (@item.status.finaliza != true)
+                            {
+                                <a href="javascript:abrirModal(@item.id);">Alterar Status</a>
+                            }
+
+
+                        </td>
+                        
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    }
+}
+    
+<div class="modal fade" id="myModalListConsulta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Dados da Consulta</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form">
+
+                                @Html.Action("AtualizarConsulta", "consulta")
+
+                            </form>
+                        </div>
+                        <!-- /.col-lg-6 (nested) -->
+                        <!-- /.col-lg-6 (nested) -->
+                    </div>
+
+                    <!-- /.row (nested) -->
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" id="btnFechaModallistaConsulta" data-dismiss="modal">Fechar</button>
+                <button type="button" id="btnSalvarConsulta" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+            function abrirModal(id) {
+                $("#hfConsultaListaID").val(id);
+                $('#myModalListConsulta').modal('show');
+
+            }
+
+
+    $("#btnSalvarConsulta").click(function () {
+
+        var data = {
+            id: $('#hfConsultaListaID').val(),
+            statusID: $('#cboModelStatus option:selected').val(),
+            usuarioResponsavelID: $('#cboModelUsuario option:selected').val()
+
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/consulta/atualizarDados/",
+            content: "application/json; charset=utf-8",
+            dataType: "html",
+            data: data,
+            success: function (d) {
+                $("#btnFechaModallistaConsulta").click();
+                $("#btnPesquisar").click();
+              
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                // TODO: Show error
+            }
+        });
+    });
+        
+
+</script>

@@ -1,0 +1,64 @@
+﻿@model  IEnumerable<servico>
+
+
+@if (Model != null)
+{
+    if (Model.Count() < 1)
+    {
+        <h2>Nenhum registro encontrado !</h2>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>nome</th>
+                    <th>Valor</th>
+
+                    <th>Ativo</th>
+      
+                    <th>#</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.id
+
+                        </td>
+                        <td>
+                            @item.nome
+                        </td>
+                        <td>
+                            R$  <label class="money">@item.valor</label>
+                        </td>
+                        <td>
+                            @item.status
+                        </td>
+                       
+                        <td>
+                            @*@Html.ActionLink("editar", "Editar", "cliente", new {  id = @item.idClientes },null)*@
+                            @*<a href="@Url.Action("Editar", "servico", new {  id = @item.id })">Editar</a>*@
+                            <a href="javascript:Editar(@item.id)">Editar</a>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    }
+}
+
+<script type="text/javascript">
+    $('.money').mask('000.000.000.000.000,00', { reverse: true });
+    function Editar(id)
+    {
+
+        window.location.assign("/servico/editar?id="+id);
+
+    }
+
+</script>

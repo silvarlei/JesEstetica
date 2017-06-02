@@ -1,0 +1,85 @@
+﻿@model  IEnumerable<cliente>
+
+
+@if (Model != null)
+{
+    if (Model.Count() < 1)
+    {
+        <h5>Nenhum registro encontrado !</h5>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>nome</th>
+                    <th>CPF</th>
+                    <th>RG</th>
+                    <th>Telefone</th>
+                    <th>#</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.idClientes
+                        </td>
+                        <td>
+                            @item.nome
+                        </td>
+                        <td>
+                            @item.CPF
+                        </td>
+                        <td>
+                            @item.RG
+                        </td>
+                        <td>
+                            @item.telefone1
+                        </td>
+                        <td>
+                           @*@Html.ActionLink("editar", "Editar", "cliente", new {  id = @item.idClientes },null)*@   
+                            @*<a href="@Url.Action("Editar", "cliente", new {  id = @item.idClientes })" >Editar</a>*@
+                            <a href="javascript:EditarCliente(@item.idClientes)">Editar</a>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    }
+}
+
+<script type="text/javascript">
+    function EditarCliente(id)
+    {
+       
+
+        window.location.assign("/cliente/editar?id="+id);
+      
+    }
+    //$("#btnPesquisar").click(function () {
+
+    //    var data = {
+    //        nome: $('#txtNome').val(),
+    //        cpf: $('#txtCPF').val(),
+    //        rg: $('#txtRG').val()
+    //    };
+
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/cliente/carregar/",
+    //        content: "application/json; charset=utf-8",
+    //        dataType: "html",
+    //        data: data,
+    //        success: function (d) {
+    //            $("#listaCliente").html(d);
+    //        },
+    //        error: function (xhr, textStatus, errorThrown) {
+    //            // TODO: Show error
+    //        }
+    //    });
+    //});
+</script>

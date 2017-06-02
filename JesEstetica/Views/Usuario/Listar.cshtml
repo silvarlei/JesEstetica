@@ -1,0 +1,75 @@
+﻿@model  IEnumerable<usuario>
+
+
+@if (Model != null)
+{
+    if (Model.Count() < 1)
+    {
+        <h5>Nenhum registro encontrado !</h5>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>nome</th>
+                    <th>Ativo</th>
+                    <th>#</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.id
+                        </td>
+                        <td>
+                            @item.nome
+                        </td>
+                        <td>
+                            @item.status  
+                        </td>
+                        <td>
+                            @*@Html.ActionLink("editar", "Editar", "cliente", new {  id = @item.idClientes },null)*@
+                            @*<a href="@Url.Action("Editar", "cliente", new {  id = @item.idClientes })" >Editar</a>*@
+                            <a href="javascript:EditarUsuario(@item.id)">Editar</a>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    }
+}
+
+<script type="text/javascript">
+    function EditarUsuario(id)
+    {
+
+        window.location.assign("/usuario/editar?id="+id);
+
+    }
+    //$("#btnPesquisar").click(function () {
+
+    //    var data = {
+    //        nome: $('#txtNome').val(),
+   
+    //    };
+
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/cliente/carregar/",
+    //        content: "application/json; charset=utf-8",
+    //        dataType: "html",
+    //        data: data,
+    //        success: function (d) {
+    //            $("#listaCliente").html(d);
+    //        },
+    //        error: function (xhr, textStatus, errorThrown) {
+    //            // TODO: Show error
+    //        }
+    //    });
+    //});
+</script>
