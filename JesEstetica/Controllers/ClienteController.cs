@@ -14,6 +14,7 @@ namespace JesEstetica.Controllers
         {
             repositorio = new BaseDados();
         }
+
         // GET: Cliente
         public ActionResult Index()
         {
